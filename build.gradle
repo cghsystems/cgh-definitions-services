@@ -1,0 +1,47 @@
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+
+version = "1.1"
+final env = System.getenv()
+//final notebookHome = env["CGHSYS_HOME"]
+final notebookHome = '/home/chris/dev/'	
+
+gradle.taskGraph.whenReady {taskGraph ->
+    if (!taskGraph.hasTask(':release')) {
+        version = "${version}-SNAPSHOT"
+    }
+}
+
+repositories {
+    mavenCentral()
+    //flatDir(dirs: file("${groovyHome}/lib"))
+    //flatDir(dirs: file('C:/dev/lib/groovy'))
+    //flatDir(dirs: file('/lib'))
+    //flatDir(dirs: file('C:/dev/workspace/thirdparty/lib/unittest/'))
+}
+
+dependencies {
+    groovy group: 'org.codehaus.groovy', name: 'groovy-all', version: '1.8.0'
+    
+    compile group: 'com.melloware', name: 'jintellitype', version: '1.3.3'
+
+    //compile fileTree(dir: "/lib", include: '*.jar') 
+    testCompile group: 'junit', name: 'junit', version: '4.8.2'
+}
+
+jar {
+    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+}
+
+manifest.mainAttributes(
+    'Implementation-Title': "Notebook",
+    'Implementation-Version': version,
+    'Main-Class' : "scripts.tools.defs.Main"
+)
+
+task release(dependsOn: build) { 
+  def executionFile = new File("${notebookHome}", "${archivesBaseName}.bat")
+  if(executionFile.exists()) executionFile.delete() 
+  executionFile << "start javaw -jar ${jar.archivePath.getAbsolutePath()} %1 %2 %3 %4"
+  println "Build Complete"
+}
