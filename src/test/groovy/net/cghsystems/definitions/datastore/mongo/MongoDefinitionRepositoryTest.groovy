@@ -1,7 +1,8 @@
-package net.cghsystems.notes.datastore.mongo
+package net.cghsystems.definitions.datastore.mongo
 
 import static org.junit.Assert.*
-import net.cghsystems.notes.datastore.mongo.ioc.MongoContext
+import net.cghsystems.definitions.datastore.mongo.MongoDefinitionRepository
+import net.cghsystems.definitions.datastore.mongo.ioc.MongoContext
 
 import org.junit.Test
 import org.junit.runner.RunWith

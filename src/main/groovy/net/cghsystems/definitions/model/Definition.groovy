@@ -1,10 +1,8 @@
-package net.cghsystems.notes.model
+package net.cghsystems.definitions.model
 
 import groovy.transform.EqualsAndHashCode
-import groovy.transform.ToString
 import groovy.transform.TupleConstructor
 
-@ToString
 @EqualsAndHashCode
 @TupleConstructor
 class Definition {

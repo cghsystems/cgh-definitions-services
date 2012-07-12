@@ -9,12 +9,25 @@
 	<int:channel id="responseChannel" />
 	<int:channel id="errorChannel" />
 
-	<int-http:inbound-channel-adapter
-		name="defsInboundAdapter" channel="responseChannel" error-channel="errorChannel"
-		path="/spring/dd" supported-methods="POST" />
+	<int-http:inbound-channel-adapter id="defsInboundAdapter"
+		channel="responseChannel" error-channel="errorChannel"
+		path="/create/id/{id}/name/{name}/definition/{definition}/description/{description}/cat/{cat}"
+		supported-methods="GET"
+		payload-expression="new net.cghsystems.definitions.model.Definition( 
+		          #pathVariables.id, 
+		          #pathVariables.name, 
+		          #pathVariables.definition, 
+		          #pathVariables.description, 
+		          #pathVariables.cat )" />
+
+	<int:service-activator input-channel="responseChannel"
+		ref="mongoDefinitionRepository" method="save" />
+	<int:service-activator input-channel="errorChannel"
+		ref="testLogger" method="log" />
+
+	<bean id="testLogger" class="net.cghsystems.definitions.web.ioc.TestLogger" />
 
 	<bean
 		class="org.springframework.integration.http.inbound.UriPathHandlerMapping" />
-
 
 </beans>

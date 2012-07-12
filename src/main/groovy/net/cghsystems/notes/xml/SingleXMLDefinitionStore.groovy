@@ -3,11 +3,8 @@
  */
 package net.cghsystems.notes.xml
 
-import net.cghsystems.notes.datastore.DefinitionRepository
-import net.cghsystems.notes.model.Definition
-
-
-
+import net.cghsystems.definitions.datastore.DefinitionRepository;
+import net.cghsystems.definitions.model.Definition
 
 class SingleXMLDefinitionStore implements DefinitionRepository {
 

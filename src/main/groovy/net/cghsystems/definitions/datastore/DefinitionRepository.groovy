@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.cghsystems.notes.datastore
+package net.cghsystems.definitions.datastore
 
 interface DefinitionRepository {
 

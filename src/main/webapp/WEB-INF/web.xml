@@ -7,27 +7,23 @@
 
 	<display-name>cgh-definitions-services</display-name>
 
-	<!-- <servlet> <servlet-name>definitions-rest-api</servlet-name> <servlet-class> 
-		org.springframework.web.servlet.DispatcherServlet </servlet-class> <init-param> 
-		<param-name>contextClass</param-name> <param-value> org.springframework.web.context.support.AnnotationConfigWebApplicationContext 
-		</param-value> </init-param> <init-param> <param-name>contextConfigLocation</param-name> 
-		<param-value>WEB-INF/definitions-si-context.xml</param-value> </init-param> 
-		<load-on-startup>1</load-on-startup> </servlet> <servlet-mapping> <servlet-name>definitions-rest-api</servlet-name> 
-		<url-pattern>/</url-pattern> </servlet-mapping> -->
-
 	<servlet>
 		<servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
+			<param-name>contextClass</param-name>
+			<param-value> org.springframework.web.context.support.AnnotationConfigWebApplicationContext 
+        </param-value>
+		</init-param>
+		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/definitions-si-context.xml</param-value>
+			<param-value>net.cghsystems.definitions.web.ioc.DefinitionsControllerApplicationContext</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-
 	<servlet-mapping>
 		<servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
-		<url-pattern>/spring/*</url-pattern>
+		<url-pattern>/definition/*</url-pattern>
 	</servlet-mapping>
 
 </web-app>
