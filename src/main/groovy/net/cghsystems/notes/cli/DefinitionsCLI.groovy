@@ -3,7 +3,7 @@
  */
 package net.cghsystems.notes.cli;
 
-import net.cghsystems.notes.SingleXMLDefinitionStore;
+import net.cghsystems.notes.xml.SingleXMLDefinitionStore;
 
 
 /**

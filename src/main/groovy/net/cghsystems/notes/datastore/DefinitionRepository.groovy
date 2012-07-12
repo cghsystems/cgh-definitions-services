@@ -1,15 +1,12 @@
 /**
  * 
  */
-package net.cghsystems.notes
+package net.cghsystems.notes.datastore
 
-/**
- * 
- */
-interface DefinitionStore {
+interface DefinitionRepository {
 
     /** names of all of the available stores by key */
-    def getDefinitionStoreSourceKeys();
+    def getDefinitionStoreSourceKeys()
 
     void updateCurrentStoreSource(key)
 

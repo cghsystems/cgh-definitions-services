@@ -14,52 +14,51 @@ import javax.swing.BoxLayout
 import javax.swing.JFrame
 import javax.swing.JOptionPane as OP
 
-import net.cghsystems.notes.DefinitionStore 
-import net.cghsystems.notes.SingleXMLDefinitionStore;
+import net.cghsystems.notes.xml.SingleXMLDefinitionStore
 
 
 //Support links
 //Add links from one note to another. link:notename
 public class DefinitionsGUI {
-	
+
 	static main(args) {
 		final n = new DefinitionsGUI()
 		n.show()
 	}
-	
-	private final DefinitionStore ds = new SingleXMLDefinitionStore()
+
+	private final ds = new SingleXMLDefinitionStore()
 	private final shutDownListener = new DefintionsGUIShutdownListener()
-	
+
 	private final swingBuilder = new SwingBuilder()
 	private final stripeRender = new StripeRenderer(builder:swingBuilder)
-	
+
 	private resultsList
-	
+
 	private currentSelectedLocation
-	
+
 	private final deleteNoteDialogAction = {
-		
+
 		final toDelete = stripeRender.currentlySelected?.id ?: ""
 		def optionPane = swingBuilder.optionPane()
-		
+
 		def nothingToDelete = {
 			optionPane.showMessageDialog(null, "Please select a Note to delete", "Nothing to Delete", OP.PLAIN_MESSAGE)
 		}
-		
+
 		def delete =  {
 			def options = ["Yes", "No"]as Object[]
 			def choice = optionPane.showOptionDialog(null, "Do you want to delete ${stripeRender.currentlySelected.name}", 'Delete Note',
 			OP.YES_NO_OPTION, OP.QUESTION_MESSAGE, null, options, "")
-			
+
 			if(options[choice] == "Yes") {
 				ds.delete(toDelete)
 				searchForNoteAndDisplayResults("")
 			}
 		}
-		
+
 		toDelete == "" ? nothingToDelete() : delete()
 	}
-	
+
 	void show() {
 		final title = 'Notebook'
 		swingBuilder.edt {
@@ -77,11 +76,11 @@ public class DefinitionsGUI {
 		}
 		searchForNoteAndDisplayResults("")
 	}
-	
+
 	private def getIconImage() {
 		new SwingBuilder().imageIcon(resource:'/document_text.png').getImage()
 	}
-	
+
 	private final addOrEditNoteDialog (title, currentlySelected, addOrEditNote) {
 		swingBuilder.dialog(id:'addOrEditDialog', modal: true, title: "${title} Note", size:[400, 220]) {
 			panel(background: Color.WHITE, opaque: true) {
@@ -89,18 +88,18 @@ public class DefinitionsGUI {
 				lineBorder(color:Color.WHITE, thickness:10, parent:true)
 				label("Name:")
 				final name = textField(currentlySelected?.name ?: "")
-				
+
 				vstrut(height:10, opaque: true, background: Color.WHITE)
 				label("Definition")
 				final definitiion = textField(currentlySelected?.definition ?: "")
-				
+
 				vstrut(height:10, opaque: true, background: Color.WHITE)
 				label("Description")
 				final description = textField(currentlySelected?.description ?: "")
-				
+
 				vstrut(height:10, opaque: true, background: Color.WHITE)
-				
-				
+
+
 				button(text: "${title}", actionPerformed: {
 					addOrEditNote(currentlySelected?.id, name.text, definitiion.text, description.text)
 					addOrEditDialog.dispose()
@@ -108,39 +107,39 @@ public class DefinitionsGUI {
 			}
 		}
 	}
-	
+
 	private final resultPanel() {
 		swingBuilder.scrollPane(constraints: BL.CENTER){
 			resultsList = list(fixedCellWidth: 600, fixedCellHeight: 75, cellRenderer: stripeRender)
 		}
 	}
-	
+
 	private final buttonPanel() {
 		swingBuilder.panel(constraints: BL.SOUTH, opaque: true, background: Color.WHITE) {
 			flowLayout()
-			
+
 			button("Add", mnemonic: "A", actionPerformed: {
 				addOrEditNoteDialog("Add", null, {id, name, definitiion, description ->
 					ds.add(name, definitiion, description)
 					searchForNoteAndDisplayResults(name)
 				}).show()
 			})
-			
+
 			button("Delete", mnemonic: "D", actionPerformed: deleteNoteDialogAction)
-			
+
 			button("Edit", mnemonic: "E", actionPerformed: {
 				addOrEditNoteDialog("Edit", stripeRender.currentlySelected, {id,name, definitiion, description ->
 					ds.edit(id, name, definitiion, description)
 					searchForNoteAndDisplayResults(name)
 				}).show()
 			})
-			
+
 			button("Close", mnemonic: "C", actionPerformed: { shutDownListener.notifyOnClose() })
 		}
 	}
-	
+
 	private final searchPanel() {
-		
+
 		final keyListener = [ keyTyped: {
 			final def handleEscape = {
 				searchForNoteAndDisplayResults("")
@@ -148,22 +147,22 @@ public class DefinitionsGUI {
 			}
 			it.keyChar == KeyEvent.VK_ESCAPE ? handleEscape(it) : searchForNoteAndDisplayResults(it.source.text)
 		} ] as KeyAdapter
-		
+
 		final addButtonGroup = {
-			def stores = ds.getDefinitionStoreSourceKeys();
-			
+			def stores = ds.getDefinitionStoreSourceKeys()
+
 			swingBuilder.panel(background: Color.WHITE, layout: new FlowLayout()) {
-				myGroup = buttonGroup();
+				myGroup = buttonGroup()
 				stores.each {
 					def r = radioButton(text:it, buttonGroup:myGroup, background: Color.WHITE,
 					actionPerformed: {
 						ds.updateCurrentStoreSource(it.source.text)
 						searchForNoteAndDisplayResults("")
-					});
+					})
 				}
 			}
 		}
-		
+
 		swingBuilder.vbox(constraints: BL.NORTH) {
 			addButtonGroup()
 			final search = textField()
@@ -171,11 +170,11 @@ public class DefinitionsGUI {
 			vstrut(height:10, opaque: true, background: Color.WHITE)
 		}
 	}
-	
+
 	private def getDefaultCloseOperation() {
 		SystemTray.isSupported() ? JFrame.DO_NOTHING_ON_CLOSE : JFrame.EXIT_ON_CLOSE
 	}
-	
+
 	private void searchForNoteAndDisplayResults(d) {
 		swingBuilder.doOutside {
 			final data = ds.getDefinitionsForQuery(d)
@@ -183,13 +182,13 @@ public class DefinitionsGUI {
 			swingBuilder.edt { resultsList.listData = data }
 		}
 	}
-	
+
 	private void addSystemWideKeyBoardShortcuts(sm, shutdownListener) {
 		def scl = new SystemWideKeyBoardShortcutInstaller(definitionsGUIDisplayStateMachine: sm)
 		scl.install()
 		shutdownListener << scl
 	}
-	
+
 	private void addApplicationTrayIcon(title, frame, sm, shutdownListener) {
 		def ti = new DefinitionsTrayIcon(frame: frame, title: title, definitionsGUIDisplayStateMachine: sm, definitionsGUIShutDownListener: shutdownListener)
 		ti.addTrayIcon()

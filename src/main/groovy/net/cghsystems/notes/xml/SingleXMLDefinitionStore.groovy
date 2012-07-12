@@ -1,12 +1,15 @@
 /**
  *
  */
-package net.cghsystems.notes;
+package net.cghsystems.notes.xml
+
+import net.cghsystems.notes.datastore.DefinitionRepository
+import net.cghsystems.notes.model.Definition
 
 
 
 
-class SingleXMLDefinitionStore implements DefinitionStore {
+class SingleXMLDefinitionStore implements DefinitionRepository {
 
     private static final String sourceDir = "C:/dev/bin/groovy-scripts/"
 
