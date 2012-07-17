@@ -9,8 +9,8 @@ import org.springframework.test.context.TestContext
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener
 
 /**
- * Creates the test {@link Definition} test data is created in the underlying instance of Mongo 
- * that the *integration test* is to be run against.
+ * A spring {@link TestExecutionListeners} that creates the test {@link Definition} test data 
+ * in the underlying instance of Mongo that *integration tests* are to be run against.
  * 
  * @author chris
  *

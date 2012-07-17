@@ -1,4 +1,4 @@
-package net.cghsystems.definitions.web.ioc
+package net.cghsystems.definitions.web.error
 
 import groovy.util.logging.Log4j
 

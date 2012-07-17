@@ -6,13 +6,6 @@
 		<layout class="org.apache.log4j.SimpleLayout" />
 	</appender>
 
-	<appender name="file" class="org.apache.log4j.FileAppender">
-		<param name="File" value="/tmp/cgh/defs.log" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%-4r [%t] %-5p %c %x - %m%n" />
-		</layout>
-	</appender>
-
 	<root>
 		<priority value="info" />
 		<appender-ref ref="console" />

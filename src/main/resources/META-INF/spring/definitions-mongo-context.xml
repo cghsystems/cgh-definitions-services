@@ -6,11 +6,26 @@
 		http://schema.cloudfoundry.org/spring http://schema.cloudfoundry.org/spring/cloudfoundry-spring-0.8.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-		<cloud:mongo-db-factory id="mongoFactory"
-			service-name="mongo-notes"  />
+	<mongo:repositories base-package="net.cghsystems.definitions.datastore.mongo" />
 
+	<beans profile="cloud-foundry">
+		<!-- Mongo DB instance required by the Spring-Data framework. -->
+		<cloud:mongo-db-factory id="mongoFactory"
+			service-name="mongo-notes" />
+		<!-- Mongo Template definition is required by the Spring data framework -->
 		<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 			<constructor-arg ref="mongoFactory" />
 		</bean>
+	</beans>
+
+	<beans profile="dev">
+		<!-- Mongo DB instance required by the Spring-Data framework. -->
+		<mongo:db-factory id="mongoFactory" dbname="cgh-notes" />
+
+		<!-- Mongo Template definition is required by the Spring data framework -->
+		<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+			<constructor-arg ref="mongoFactory" />
+		</bean>
+	</beans>
 
 </beans>

@@ -1,19 +1,21 @@
 package net.cghsystems.definitions.datastore.mongo
 
 import static org.junit.Assert.*
-import net.cghsystems.definitions.datastore.mongo.ioc.MongoContextTest
 import net.cghsystems.definitions.model.Definition
 
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestExecutionListeners
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
-@ContextConfiguration(classes = [MongoContextTest])
+
+@ContextConfiguration("classpath:META-INF/spring/definitions-mongo-context.xml")
 @RunWith(SpringJUnit4ClassRunner)
 @TestExecutionListeners(InsertTestDefinitionData)
+@ActiveProfiles("dev")
 class MongoDefinitionRepositoryTest {
 
     @Autowired

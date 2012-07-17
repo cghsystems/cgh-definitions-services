@@ -26,5 +26,11 @@
 		<url-pattern>/definition/*</url-pattern>
 	</servlet-mapping>
 
+	<!-- Ensures that the Spring profiles are loaded for use in cloud foundry -->
+	<context-param>
+		<param-name>spring.profiles.default</param-name>
+		<param-value>cloud-foundry</param-value>
+	</context-param>
+
 </web-app>
 				

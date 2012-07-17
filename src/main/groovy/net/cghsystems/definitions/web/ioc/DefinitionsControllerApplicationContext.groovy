@@ -1,10 +1,7 @@
 package net.cghsystems.definitions.web.ioc
 
 
-import net.cghsystems.definitions.datastore.mongo.ioc.MongoContext
-
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Import
 import org.springframework.context.annotation.ImportResource
 
 
@@ -15,7 +12,7 @@ import org.springframework.context.annotation.ImportResource
  *
  */
 @Configuration
-@Import(MongoContext)
-@ImportResource("classpath:definitions-si-context.xml")
+@ImportResource(["classpath:META-INF/spring/definitions-si-context.xml",
+    "classpath:META-INF/spring/definitions-mongo-context.xml"])
 class DefinitionsControllerApplicationContext {
 }
