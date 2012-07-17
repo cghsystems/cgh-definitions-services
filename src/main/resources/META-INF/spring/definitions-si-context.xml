@@ -65,7 +65,7 @@
 	<int:service-activator input-channel="errorChannel"
 		ref="testLogger" method="log" />
 
-	<bean id="testLogger" class="net.cghsystems.definitions.web.ioc.TestLogger" />
+	<bean id="testLogger" class="net.cghsystems.definitions.web.error.TestLogger" />
 	<!-- End Definition Error handling -->
 
 	<!-- Required by Spring to ensure that the paths configured in the http 
