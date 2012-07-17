@@ -6,6 +6,6 @@ import groovy.util.logging.Log4j
 class TestLogger {
 
     void log(definition) {
-        log.error("Recieved ${definition}", definition)
+        log.error("Recieved Error ${definition}", definition)
     }
 }

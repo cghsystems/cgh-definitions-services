@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles
 
 @Configuration
 @Import(MongoContextTest)
-@ImportResource("classpath:definitions-si-context.xml")
+@ImportResource("classpath:META-INF/spring/definitions-si-context.xml")
 @ActiveProfiles
 class DefinitionsControllerApplicationContextTest {
 }
