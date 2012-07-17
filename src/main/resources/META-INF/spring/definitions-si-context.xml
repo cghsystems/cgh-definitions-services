@@ -7,7 +7,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- Create Definitions -->
-	<int:channel id="createDefinitionInputChannel" />
+	<int:channel id="createDefinitionInputChannel" datatype="net.cghsystems.definitions.model.Definition" />
 
 	<int-http:inbound-channel-adapter id="createDefinitionInboundAdapter"
 		channel="createDefinitionInputChannel" error-channel="errorChannel"
