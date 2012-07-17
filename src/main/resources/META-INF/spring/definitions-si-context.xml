@@ -31,7 +31,7 @@
 	<int:channel id="foundDefinitionOutputChannel"
 		datatype="net.cghsystems.definitions.model.Definition" />
 
-	<int-http:inbound-gateway id="findDefinitionInboundGateway"
+	<int-http:inbound-gateway id="findDefinitionInboundGateway" error-channel="errorChannel"
 		request-channel="findDefinitionInputChannel" reply-channel="foundDefinitionOutputChannel"
 		path="/find/id/{id}" supported-methods="GET"
 		payload-expression="#pathVariables.id" />
