@@ -6,11 +6,11 @@
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-2.1.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<int:channel id="responseChannel" />
-	<int:channel id="errorChannel" />
+	<!-- Create Definitions -->
+	<int:channel id="createDefinitionInputChannel" />
 
-	<int-http:inbound-channel-adapter id="defsInboundAdapter"
-		channel="responseChannel" error-channel="errorChannel"
+	<int-http:inbound-channel-adapter id="createDefinitionInboundAdapter"
+		channel="createDefinitionInputChannel" error-channel="errorChannel"
 		path="/create/id/{id}/name/{name}/definition/{definition}/description/{description}/cat/{cat}"
 		supported-methods="GET"
 		payload-expression="new net.cghsystems.definitions.model.Definition( 
@@ -20,13 +20,56 @@
 		          #pathVariables.description, 
 		          #pathVariables.cat )" />
 
-	<int:service-activator input-channel="responseChannel"
-		ref="mongoDefinitionRepository" method="save" />
+	<int:service-activator input-channel="createDefinitionInputChannel"
+		expression="@mongoDefinitionRepository.save(payload)" />
+	<!-- End create definitions -->
+
+
+
+	<!-- Find Definitions -->
+	<int:channel id="findDefinitionInputChannel" datatype="java.lang.String" />
+	<int:channel id="foundDefinitionOutputChannel"
+		datatype="net.cghsystems.definitions.model.Definition" />
+
+	<int-http:inbound-gateway id="findDefinitionInboundGateway"
+		request-channel="findDefinitionInputChannel" reply-channel="foundDefinitionOutputChannel"
+		path="/find/id/{id}" supported-methods="GET"
+		payload-expression="#pathVariables.id" />
+
+	<int:service-activator id="findDefinitionServiceActivator"
+		input-channel="findDefinitionInputChannel"
+		expression="@mongoDefinitionRepository.findById(payload)"  />
+	<!-- End find Definitions -->
+
+
+
+	<!-- Delete Definitions -->
+	<int:channel id="deleteDefinitionInputChannel"
+		datatype="net.cghsystems.definitions.model.Definition" />
+
+	<int-http:inbound-channel-adapter id="deleteDefinitionInboundAdapter"
+		channel="deleteDefinitionInputChannel" error-channel="errorChannel"
+		path="/delete/id/{id}" supported-methods="DELETE"
+		payload-expression="new net.cghsystems.definitions.model.Definition( 
+                  #pathVariables.id)" />
+
+	<int:service-activator input-channel="deleteDefinitionInputChannel"
+		expression="@mongoDefinitionRepository.delete(payload)" />
+	<!-- End Delete Definitions -->
+
+
+
+	<!-- Definitions Error Handling -->
+	<int:channel id="errorChannel" />
+
 	<int:service-activator input-channel="errorChannel"
 		ref="testLogger" method="log" />
 
 	<bean id="testLogger" class="net.cghsystems.definitions.web.ioc.TestLogger" />
+	<!-- End Definition Error handling -->
 
+	<!-- Required by Spring to ensure that the paths configured in the http 
+		inbound channel adapters are exposed and mapped -->
 	<bean
 		class="org.springframework.integration.http.inbound.UriPathHandlerMapping" />
 

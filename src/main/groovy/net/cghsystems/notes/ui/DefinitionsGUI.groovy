@@ -14,8 +14,6 @@ import javax.swing.BoxLayout
 import javax.swing.JFrame
 import javax.swing.JOptionPane as OP
 
-import net.cghsystems.notes.xml.SingleXMLDefinitionStore
-
 
 //Support links
 //Add links from one note to another. link:notename
@@ -26,7 +24,7 @@ public class DefinitionsGUI {
 		n.show()
 	}
 
-	private final ds = new SingleXMLDefinitionStore()
+	private final ds
 	private final shutDownListener = new DefintionsGUIShutdownListener()
 
 	private final swingBuilder = new SwingBuilder()
