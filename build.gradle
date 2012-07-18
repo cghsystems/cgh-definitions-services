@@ -2,7 +2,6 @@ apply plugin: 'eclipse'
 apply plugin: 'groovy'
 apply plugin: 'war'
 apply plugin: 'jetty'
-apply plugin: 'maven'
 
 version = "2.0"
 group = "net.cghsystems"
