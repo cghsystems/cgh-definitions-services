@@ -1,8 +1,11 @@
 apply plugin: 'eclipse'
 apply plugin: 'groovy'
+apply plugin: 'war'
 apply plugin: 'jetty'
+apply plugin: 'maven'
 
 version = "2.0"
+group = "net.cghsystems"
 
 final SPRING_VERSION = '3.1.0.RELEASE'
 final GROOVY_VERSION = "1.8.0"
@@ -40,7 +43,7 @@ dependencies {
     compile group:'org.cloudfoundry', name: 'cloudfoundry-runtime', version: CLOUD_FOUNDRY_VERSION
     
     //Javax Servlets
-    compile ("javax.servlet:servlet-api:2.5") { provided = true }
+    compile ('javax.servlet:javax.servlet-api:3.0.1') { provided = true }
     
     //Spring-mongo
     compile group: 'org.springframework.data', name: 'spring-data-mongodb', version: '1.0.2.RELEASE'
