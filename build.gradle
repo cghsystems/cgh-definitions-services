@@ -1,3 +1,4 @@
+apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'groovy'
 apply plugin: 'war'
@@ -6,10 +7,10 @@ apply plugin: 'jetty'
 version = "2.0"
 group = "net.cghsystems"
 
-final SPRING_VERSION = '3.1.0.RELEASE'
-final GROOVY_VERSION = "1.8.0"
+final SPRING_VERSION = '3.1.2.RELEASE'
+final GROOVY_VERSION = "2.0.4"
 final CLOUD_FOUNDRY_VERSION = "0.8.1"
-final SPRING_INTEGRATION_VERSION = '2.1.0.RELEASE'
+final SPRING_INTEGRATION_VERSION = '2.2.0.RC1'
 
 repositories {
     mavenCentral()
@@ -39,23 +40,29 @@ dependencies {
     compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.7'
 
     //Cloud Foundry
-    compile group:'org.cloudfoundry', name: 'cloudfoundry-runtime', version: CLOUD_FOUNDRY_VERSION
-    
+    compile group: 'org.cloudfoundry', name: 'cloudfoundry-runtime', version: CLOUD_FOUNDRY_VERSION
+
     //Javax Servlets
-    compile ('javax.servlet:javax.servlet-api:3.0.1') { provided = true }
-    
+    compile('javax.servlet:javax.servlet-api:3.0.1') { provided = true }
+
     //Spring-mongo
-    compile group: 'org.springframework.data', name: 'spring-data-mongodb', version: '1.0.2.RELEASE'
+    compile(group: 'org.springframework.data', name: 'spring-data-mongodb', version: '1.0.2.RELEASE') {
+        transitive = false
+    }
+    compile("org.springframework.data:spring-data-commons-core:1.2.1.RELEASE") {
+        transitive = false
+    }
 
     //Spring-Integration
     compile group: 'org.springframework.integration', name: 'spring-integration-core', version: SPRING_INTEGRATION_VERSION
-    compile group: 'org.springframework.integration', name: 'spring-integration-http', version: SPRING_INTEGRATION_VERSION
+    compile(group: 'org.springframework.integration', name: 'spring-integration-http', version: SPRING_INTEGRATION_VERSION)
 
     //Mongo
     compile group: 'org.mongodb', name: 'mongo-java-driver', version: '2.8.0'
 
     //Test
-    testCompile "org.springframework:spring-test-mvc:1.0.0.BUILD-SNAPSHOT"
-    testCompile group: 'org.springframework', name: 'spring-test', version: SPRING_VERSION
+    testCompile "org.springframework:spring-test-mvc:1.0.0.M1"
     testCompile group: 'junit', name: 'junit', version: '4.8.2'
+    testCompile "org.springframework:spring-test:${SPRING_VERSION}"
+
 }
