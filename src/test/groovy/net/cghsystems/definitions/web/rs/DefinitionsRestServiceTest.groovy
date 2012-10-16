@@ -1,13 +1,9 @@
 package net.cghsystems.definitions.web.rs
 
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.delete
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.*
 import net.cghsystems.definitions.datastore.mongo.InsertTestDefinitionData
 import net.cghsystems.definitions.datastore.mongo.MongoDefinitionRepository
 import net.cghsystems.definitions.model.Definition
 import net.cghsystems.definitions.web.ioc.DefinitionsControllerApplicationContext
-
 import org.codehaus.jackson.map.ObjectMapper
 import org.junit.BeforeClass
 import org.junit.Test
@@ -20,8 +16,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.web.server.MockMvc
 import org.springframework.test.web.server.ResultMatcher
 import org.springframework.test.web.server.setup.MockMvcBuilders
-import org.springframework.transaction.annotation.Transactional
 
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.delete
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.status
 
 @ContextConfiguration("classpath:META-INF/spring/definitions-mongo-context.xml")
 @RunWith(SpringJUnit4ClassRunner)
