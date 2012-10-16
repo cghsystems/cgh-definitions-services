@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.web.server.MockMvc
 import org.springframework.test.web.server.ResultMatcher
 import org.springframework.test.web.server.setup.MockMvcBuilders
+import org.springframework.transaction.annotation.Transactional
 
 
 @ContextConfiguration("classpath:META-INF/spring/definitions-mongo-context.xml")
@@ -50,11 +51,11 @@ class DefinitionsRestServiceTest {
                 definitionCategoryId: "1")
 
         final createURL = "/create/id/${expected.id}/name/${expected.name}/definition/${expected.definition}/description/${expected.description}/cat/49"
-        mvc.perform(get(createURL))
+        mvc.perform(get(createURL)).andExpect(status().isOk())
 
         final matcher = {
             final actual = new ObjectMapper().readValue(it.getResponse().getContentAsString(), Definition)
-            assert actual == expected : "Expected matching definitions"
+            assert actual == expected: "Expected matching definitions"
         }
 
         final findURL = "/find/id/${expected.id}"
@@ -64,7 +65,7 @@ class DefinitionsRestServiceTest {
     }
 
     @Test
-    void shouldHandleRequestForInvaliDefinition() {
+    void shouldHandleRequestForInvalidDefinition() {
 
         final expected = new Definition(id: "DefinitionsRestServiceTest-shouldCreateDefinitionWithGetRequest",
                 name: "shouldCreateDefinitionWithGetRequest-name",
@@ -78,26 +79,26 @@ class DefinitionsRestServiceTest {
         final findURL = "/find/id/${expected.id}"
         mvc.perform(get(findURL))
                 .andExpect(status().isOk())
-                .andExpect( [match: { it == null }] as ResultMatcher )
+                .andExpect([match: { it == null }] as ResultMatcher)
     }
 
 
     @Test
     void shouldDeleteDefinition() {
         final deleteURL = "/delete/id/${InsertTestDefinitionData.DEF.id}"
-        assert mongo.exists(InsertTestDefinitionData.DEF.id) == true :"Definition should exist here"
+        assert mongo.exists(InsertTestDefinitionData.DEF.id) == true: "Definition should exist here"
         mvc.perform(delete(deleteURL))
                 .andExpect(status().isOk())
-        assert mongo.exists(InsertTestDefinitionData.DEF.id) == false :"Definition should have been deleted"
+        assert mongo.exists(InsertTestDefinitionData.DEF.id) == false: "Definition should have been deleted"
     }
 
     @Test
     void shouldDoNothingIfDeleteAttemptsToDelteMissingDefinition() {
         final id = "Random"
         final deleteURL = "/delete/id/${id}"
-        assert mongo.exists(id) == false :"Definition should not exist here"
+        assert mongo.exists(id) == false: "Definition should not exist here"
         mvc.perform(delete(deleteURL))
                 .andExpect(status().isOk())
-        assert mongo.exists(id) == false :" deletion should have been handled silently"
+        assert mongo.exists(id) == false: " deletion should have been handled silently"
     }
 }

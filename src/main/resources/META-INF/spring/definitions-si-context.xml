@@ -9,9 +9,10 @@
 
 	<!-- Create Definitions -->
 	<int:channel id="createDefinitionInputChannel" datatype="net.cghsystems.definitions.model.Definition" />
+    <int:channel id="createdDefinitionInputChannel" datatype="net.cghsystems.definitions.model.Definition" />
 
-	<int-http:inbound-channel-adapter id="createDefinitionInboundAdapter"
-		channel="createDefinitionInputChannel" error-channel="errorChannel"
+	<int-http:inbound-gateway id="createDefinitionInboundAdapter"
+		request-channel="createDefinitionInputChannel" reply-channel="createdDefinitionInputChannel" error-channel="errorChannel"
 		path="/create/id/{id}/name/{name}/definition/{definition}/description/{description}/cat/{cat}"
 		supported-methods="GET"
 		payload-expression="new net.cghsystems.definitions.model.Definition( 
@@ -21,7 +22,7 @@
 		          #pathVariables.description, 
 		          #pathVariables.cat )" />
 
-	<int:service-activator input-channel="createDefinitionInputChannel"
+	<int:service-activator output-channel="createdDefinitionInputChannel" input-channel="createDefinitionInputChannel"
 		expression="@mongoDefinitionRepository.save(payload)" />
 	<!-- End create definitions -->
 
@@ -38,7 +39,7 @@
 		payload-expression="#pathVariables.id" />
 
 	<int:service-activator id="findDefinitionServiceActivator"
-		input-channel="findDefinitionInputChannel"
+		input-channel="findDefinitionInputChannel" output-channel="foundDefinitionOutputChannel"
 		expression="@mongoDefinitionRepository.findById(payload)"  />
 	<!-- End find Definitions -->
 
