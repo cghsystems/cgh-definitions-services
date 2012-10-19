@@ -4,6 +4,9 @@ package net.cghsystems.definitions.datastore.mongo
 import net.cghsystems.definitions.model.Definition
 
 import org.springframework.data.mongodb.repository.MongoRepository
+import org.springframework.data.mongodb.repository.Query
+import org.springframework.data.repository.query.Param
+import org.springframework.stereotype.Repository
 
 /**
  * The Spring-Data {@link Repository} definition that allows CRUD operations to be performed 
@@ -12,9 +15,10 @@ import org.springframework.data.mongodb.repository.MongoRepository
  * @author chris
  *
  */
+@Repository
 interface MongoDefinitionRepository extends MongoRepository<Definition, String>  {
 
-    /** 
+    /**
      * @param id of the {@link Definition} to search the repository for. Uses the Spring data naming 
      * convention to create the query
      * 

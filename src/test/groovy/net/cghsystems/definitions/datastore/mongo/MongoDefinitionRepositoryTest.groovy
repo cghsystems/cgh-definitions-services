@@ -24,58 +24,35 @@ class MongoDefinitionRepositoryTest {
     /**
      * Given a definition exists in the db 
      * When {@link MongoDefinitionRepository#findById(String)} call with it's id 
-     * Then should return expected {@link Definition} 
+     * Then should return expected {@link Definition}
      */
     @Test
     void findById() {
-        def expected = InsertTestDefinitionData.DEF
-        def actual =  unit.findById(expected.id)
-        assert actual == expected : "Expecting matching definitions"
+        final expected = InsertTestDefinitionData.DEF
+        final actual = unit.findById(expected.id)
+        assert actual == expected: "Expecting matching definitions"
     }
 
     /**
-     * Given a {@link Definition} 
-     * When {@link MongoDefinitionRepository#save(net.cghsystems.definitions.model.Definition)} 
+     * Given a {@link Definition}
+     * When {@link MongoDefinitionRepository#save(net.cghsystems.definitions.model.Definition)}
      * Then repo should contain expected {@link Definition}
      */
     @Test
     void save() {
-        def expected = new Definition(id: "MongoDefinitionRepositoryTest-create",
+        final expected = new Definition(id: "MongoDefinitionRepositoryTest-create",
                 name: "create",
                 definition: "test-def",
                 description: "test-desc",
-                definitionCategoryId: "1")
+                definitionCategoryId: 1L)
         unit.save(expected)
-        def actual =  unit.findById(expected.id)
-        assert actual == expected : "Expecting matching definitions"
+        final actual = unit.findById(expected.id)
+        assert actual == expected: "Expecting matching definitions"
     }
-
-    @Test
-    void saveTwiceShouldNotUpdate() {
-        def original = new Definition(id: "MongoDefinitionRepositoryTest-create",
-                name: "create",
-                definition: "test-def",
-                description: "test-desc",
-                definitionCategoryId: "1")
-        unit.save(original)
-        def actual =  unit.findById(original.id)
-        assert actual == original : "Expecting matching definitions"
-
-        def ediited = new Definition(id: "MongoDefinitionRepositoryTest-create",
-                name: "create",
-                definition: "somethingchanged",
-                description: "test-desc",
-                definitionCategoryId: "1")
-        unit.save(original)
-        def editedActual =  unit.findById(original.id)
-        assert editedActual == original : "Expecting different definitions"
-    }
-
-
 
     @Test
     void cannotFindById() {
-        assert null == unit.findById("1")
+        assert null == unit.findById("randomID")
     }
 
     /**
@@ -85,8 +62,8 @@ class MongoDefinitionRepositoryTest {
      */
     @Test
     void findByDefinitionCategoryId() {
-        def expected = InsertTestDefinitionData.DEF
-        def actual =  unit.findByDefinitionCategoryId(expected.definitionCategoryId)
-        assert actual.containsAll(expected, InsertTestDefinitionData.DEF_2) : "Expecting matching definitions"
+        final expected = InsertTestDefinitionData.DEF
+        final actual = unit.findByDefinitionCategoryId(expected.definitionCategoryId)
+        assert actual.containsAll(expected, InsertTestDefinitionData.DEF_2): "Expecting matching definitions"
     }
 }
