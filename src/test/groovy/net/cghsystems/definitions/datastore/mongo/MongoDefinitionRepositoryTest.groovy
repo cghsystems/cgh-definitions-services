@@ -1,7 +1,6 @@
 package net.cghsystems.definitions.datastore.mongo
 
-import static org.junit.Assert.*
-import net.cghsystems.definitions.model.Definition
+import net.cghsystems.definitions.domain.Definition
 
 import org.junit.Test
 import org.junit.runner.RunWith

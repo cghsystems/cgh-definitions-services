@@ -1,6 +1,6 @@
 package net.cghsystems.definitions.datastore.mongo
 
-import net.cghsystems.definitions.model.Definition
+import net.cghsystems.definitions.domain.Definition
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoOperations
 import org.springframework.test.context.TestContext

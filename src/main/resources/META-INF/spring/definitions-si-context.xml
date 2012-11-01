@@ -8,14 +8,14 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- Create Definitions -->
-	<int:channel id="createDefinitionInputChannel" datatype="net.cghsystems.definitions.model.Definition" />
-    <int:channel id="createdDefinitionInputChannel" datatype="net.cghsystems.definitions.model.Definition" />
+	<int:channel id="createDefinitionInputChannel" datatype="net.cghsystems.definitions.domain.Definition" />
+    <int:channel id="createdDefinitionInputChannel" datatype="net.cghsystems.definitions.domain.Definition" />
 
 	<int-http:inbound-gateway id="createDefinitionInboundAdapter"
 		request-channel="createDefinitionInputChannel" reply-channel="createdDefinitionInputChannel" error-channel="errorChannel"
 		path="/create/id/{id}/name/{name}/definition/{definition}/description/{description}/cat/{cat}"
 		supported-methods="GET"
-		payload-expression="new net.cghsystems.definitions.model.Definition( 
+		payload-expression="new net.cghsystems.definitions.domain.Definition(
 		          #pathVariables.id, 
 		          #pathVariables.name, 
 		          #pathVariables.definition, 
@@ -26,12 +26,10 @@
 		expression="@mongoDefinitionRepository.save(payload)" />
 	<!-- End create definitions -->
 
-
-
 	<!-- Find Definitions -->
 	<int:channel id="findDefinitionInputChannel" datatype="java.lang.String" />
 	<int:channel id="foundDefinitionOutputChannel"
-		datatype="net.cghsystems.definitions.model.Definition" />
+		datatype="net.cghsystems.definitions.domain.Definition" />
 
 	<int-http:inbound-gateway id="findDefinitionInboundGateway" error-channel="errorChannel"
 		request-channel="findDefinitionInputChannel" reply-channel="foundDefinitionOutputChannel"
@@ -47,12 +45,12 @@
 
 	<!-- Delete Definitions -->
 	<int:channel id="deleteDefinitionInputChannel"
-		datatype="net.cghsystems.definitions.model.Definition" />
+		datatype="net.cghsystems.definitions.domain.Definition" />
 
 	<int-http:inbound-channel-adapter id="deleteDefinitionInboundAdapter"
 		channel="deleteDefinitionInputChannel" error-channel="errorChannel"
 		path="/delete/id/{id}" supported-methods="DELETE"
-		payload-expression="new net.cghsystems.definitions.model.Definition( 
+		payload-expression="new net.cghsystems.definitions.domain.Definition(
                   #pathVariables.id)" />
 
 	<int:service-activator input-channel="deleteDefinitionInputChannel"

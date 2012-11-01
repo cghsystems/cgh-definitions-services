@@ -1,11 +1,10 @@
 package net.cghsystems.definitions.datastore.mongo
 
 
-import net.cghsystems.definitions.model.Definition
+import net.cghsystems.definitions.domain.Definition
 
 import org.springframework.data.mongodb.repository.MongoRepository
-import org.springframework.data.mongodb.repository.Query
-import org.springframework.data.repository.query.Param
+
 import org.springframework.stereotype.Repository
 
 /**

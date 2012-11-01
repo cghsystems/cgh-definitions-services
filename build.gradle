@@ -13,6 +13,9 @@ task startJettyAsDaemon << {
 
 dependencies {
 
+    //Module Dependencies
+    compile project(':cgh-definitions-domain')
+
     //Cloud Foundry
     compile group: 'org.cloudfoundry', name: 'cloudfoundry-runtime', version: CLOUD_FOUNDRY_VERSION
 

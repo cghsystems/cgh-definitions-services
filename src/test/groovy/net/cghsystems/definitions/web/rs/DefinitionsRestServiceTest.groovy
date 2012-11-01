@@ -2,7 +2,7 @@ package net.cghsystems.definitions.web.rs
 
 import net.cghsystems.definitions.datastore.mongo.InsertTestDefinitionData
 import net.cghsystems.definitions.datastore.mongo.MongoDefinitionRepository
-import net.cghsystems.definitions.model.Definition
+import net.cghsystems.definitions.domain.Definition
 import net.cghsystems.definitions.web.ioc.DefinitionsControllerApplicationContext
 import org.codehaus.jackson.map.ObjectMapper
 import org.junit.BeforeClass
