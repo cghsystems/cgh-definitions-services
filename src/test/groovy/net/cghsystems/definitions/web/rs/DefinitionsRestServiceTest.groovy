@@ -39,6 +39,13 @@ class DefinitionsRestServiceTest {
                 .build()
     }
 
+
+    @Test
+    void shouldPing() {
+        final url = "/ping/message/hello"
+        mvc.perform(get(url)) .andExpect(status().isOk())
+    }
+
     @Test
     void shouldGetExistingDefinitionWithGetRequest() {
 
