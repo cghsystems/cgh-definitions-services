@@ -8,10 +8,10 @@
 
 	<mongo:repositories base-package="net.cghsystems.definitions.datastore.mongo" />
 
-	<beans profile="cloud-foundry">
+	<beans profile="cloud">
 		<!-- Mongo DB instance required by the Spring-Data framework. -->
 		<cloud:mongo-db-factory id="mongoFactory"
-			service-name="mongo-notes" />
+			service-name="mongo-defs" />
 		<!-- Mongo Template definition is required by the Spring data framework -->
 		<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 			<constructor-arg ref="mongoFactory" />
