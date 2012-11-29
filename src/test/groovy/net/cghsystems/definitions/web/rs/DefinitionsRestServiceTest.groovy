@@ -20,6 +20,7 @@ import org.springframework.test.web.server.setup.MockMvcBuilders
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status
+import org.springframework.test.web.server.ResultHandler
 
 @ContextConfiguration("classpath:META-INF/spring/definitions-mongo-context.xml")
 @RunWith(SpringJUnit4ClassRunner)
@@ -92,6 +93,7 @@ class DefinitionsRestServiceTest {
     void shouldDeleteDefinition() {
         final deleteURL = "/delete/id/${InsertTestDefinitionData.DEF.id}"
         assert mongo.exists(InsertTestDefinitionData.DEF.id) == true: "Definition should exist here"
+        println deleteURL
         mvc.perform(delete(deleteURL))
                 .andExpect(status().isOk())
         assert mongo.exists(InsertTestDefinitionData.DEF.id) == false: "Definition should have been deleted"

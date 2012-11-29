@@ -48,7 +48,7 @@
 
     <int:service-activator id="findDefinitionServiceActivator"
                            input-channel="findDefinitionInputChannel" output-channel="foundDefinitionOutputChannel"
-                           expression="@mongoDefinitionRepository.findById(payload)"/>
+                           expression="@mongoDefinitionRepository.findOne(payload)"/>
     <!-- End find Definitions -->
 
 
@@ -60,7 +60,7 @@
                                       channel="deleteDefinitionInputChannel" error-channel="errorChannel"
                                       path="/delete/id/{id}" supported-methods="DELETE"
                                       payload-expression="new net.cghsystems.definitions.domain.Definition(
-                  #pathVariables.id)"/>
+                                                            #pathVariables.id)"/>
 
     <int:service-activator input-channel="deleteDefinitionInputChannel"
                            expression="@mongoDefinitionRepository.delete(payload)"/>

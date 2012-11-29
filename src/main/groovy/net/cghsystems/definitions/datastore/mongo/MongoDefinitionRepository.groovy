@@ -17,13 +17,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface MongoDefinitionRepository extends MongoRepository<Definition, String>  {
 
-    /**
-     * @param id of the {@link Definition} to search the repository for. Uses the Spring data naming 
-     * convention to create the query
-     * 
-     * @return the Discovered {@link Definition} or null if one is not found
-     */
-    Definition findById(String id)
-
     List<Definition> findByDefinitionCategoryId(Long id)
 }

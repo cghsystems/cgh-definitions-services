@@ -1,7 +1,6 @@
 package net.cghsystems.definitions.datastore.mongo
 
 import net.cghsystems.definitions.domain.Definition
-
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,7 +8,6 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestExecutionListeners
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
-
 
 @ContextConfiguration("classpath:META-INF/spring/definitions-mongo-context.xml")
 @RunWith(SpringJUnit4ClassRunner)
@@ -22,13 +20,13 @@ class MongoDefinitionRepositoryTest {
 
     /**
      * Given a definition exists in the db 
-     * When {@link MongoDefinitionRepository#findById(String)} call with it's id 
+     * When {@link MongoDefinitionRepository#findOne(String)} call with it's id
      * Then should return expected {@link Definition}
      */
     @Test
-    void findById() {
+    void findOne() {
         final expected = InsertTestDefinitionData.DEF
-        final actual = unit.findById(expected.id)
+        final actual = unit.findOne(expected.id)
         assert actual == expected: "Expecting matching definitions"
     }
 
@@ -39,19 +37,29 @@ class MongoDefinitionRepositoryTest {
      */
     @Test
     void save() {
-        final expected = new Definition(id: "MongoDefinitionRepositoryTest-create",
+        final expected = new Definition(id: "1",
                 name: "create",
                 definition: "test-def",
                 description: "test-desc",
                 definitionCategoryId: 1L)
         unit.save(expected)
-        final actual = unit.findById(expected.id)
+        final actual = unit.findOne(expected.id)
         assert actual == expected: "Expecting matching definitions"
     }
 
     @Test
+    void saveWithoutDefinitionIdShouldCreateId() {
+        final expected = new Definition(name: "create",
+                definition: "test-def",
+                description: "test-desc",
+                definitionCategoryId: 1L)
+        final actual = unit.save(expected)
+        assert actual.id : "Was expecting an id but got null"
+    }
+
+    @Test
     void cannotFindById() {
-        assert null == unit.findById("randomID")
+        assert null == unit.findOne("random")
     }
 
     /**
