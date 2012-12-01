@@ -19,13 +19,13 @@ class InsertTestDefinitionData extends DependencyInjectionTestExecutionListener 
     @Autowired
     private MongoOperations mongo
 
-    final static DEF = new Definition(id: "defId1",
+    final static DEF = new Definition(
             name: "test-name",
             definition: "test-def",
             description: "test-desc",
             definitionCategoryId: 1)
 
-    final static DEF_2 = new Definition(id: "defId2",
+    final static DEF_2 = new Definition(
             name: "test-name-2",
             definition: "test-def-2",
             description: "test-desc-2",
@@ -55,8 +55,9 @@ class InsertTestDefinitionData extends DependencyInjectionTestExecutionListener 
         removeDefinitions()
         createCollectionIfRequired();
 
-        definitions.each { mongo.save(it) }
-
+        definitions.each {
+            mongo.save(it);
+        }
     }
 
     void createCollectionIfRequired() {

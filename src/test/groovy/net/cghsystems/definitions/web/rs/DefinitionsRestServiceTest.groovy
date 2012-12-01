@@ -14,13 +14,13 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestExecutionListeners
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.web.server.MockMvc
+import org.springframework.test.web.server.ResultHandler
 import org.springframework.test.web.server.ResultMatcher
 import org.springframework.test.web.server.setup.MockMvcBuilders
 
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status
-import org.springframework.test.web.server.ResultHandler
 
 @ContextConfiguration("classpath:META-INF/spring/definitions-mongo-context.xml")
 @RunWith(SpringJUnit4ClassRunner)
@@ -44,20 +44,26 @@ class DefinitionsRestServiceTest {
     @Test
     void shouldPing() {
         final url = "/ping/message/hello"
-        mvc.perform(get(url)) .andExpect(status().isOk())
+        mvc.perform(get(url)).andExpect(status().isOk())
     }
 
     @Test
     void shouldGetExistingDefinitionWithGetRequest() {
 
-        final expected = new Definition(id: "DefinitionsRestServiceTest-shouldCreateDefinitionWithGetRequest",
+        def expected = new Definition(
                 name: "shouldCreateDefinitionWithGetRequest-name",
                 definition: "shouldCreateDefinitionWithGetRequest-def",
                 description: "shouldCreateDefinitionWithGetRequest-desc",
                 definitionCategoryId: "1")
 
-        final createURL = "/create/id/${expected.id}/name/${expected.name}/definition/${expected.definition}/description/${expected.description}/cat/49"
-        mvc.perform(get(createURL)).andExpect(status().isOk())
+        final getCreatedIdHandler = {
+            expected = new ObjectMapper().readValue(it.getResponse().getContentAsString(), Definition)
+        }
+
+        final createURL =
+            "/create/name/${expected.name}/definition/${expected.definition}/description/${expected.description}/cat/49"
+
+        mvc.perform(get(createURL)).andExpect(status().isOk()).andDo([handle: getCreatedIdHandler] as ResultHandler)
 
         final matcher = {
             final actual = new ObjectMapper().readValue(it.getResponse().getContentAsString(), Definition)
@@ -71,29 +77,31 @@ class DefinitionsRestServiceTest {
     }
 
     @Test
-    void shouldHandleRequestForInvalidDefinition() {
+    void shouldHandleRequestForDefinitionWithNoId() {
 
-        final expected = new Definition(id: "DefinitionsRestServiceTest-shouldCreateDefinitionWithGetRequest",
-                name: "shouldCreateDefinitionWithGetRequest-name",
+        final expected = new Definition(
+                name: "shouldHandleRequestForDefinitionWithNoId-name",
                 definition: "shouldCreateDefinitionWithGetRequest-def",
                 description: "shouldCreateDefinitionWithGetRequest-desc",
-                definitionCategoryId: "1")
+                definitionCategoryId: 1)
 
-        final createURL = "/create/id/random/name/${expected.name}/definition/${expected.definition}/description/${expected.description}/cat/49"
+        final createURL = "/create/name/${expected.name}/definition/${expected.definition}/description/${expected.description}/cat/${expected.definitionCategoryId}"
+
+        final matcher = {
+            final actual = new ObjectMapper().readValue(it.getResponse().getContentAsString(), Definition)
+            println actual.id
+            assert actual.id: "Was expecting an id to have been generated but was null"
+        }
+
         mvc.perform(get(createURL))
-
-        final findURL = "/find/id/${expected.id}"
-        mvc.perform(get(findURL))
                 .andExpect(status().isOk())
-                .andExpect([match: { it == null }] as ResultMatcher)
+                .andExpect([match: matcher] as ResultMatcher)
     }
-
 
     @Test
     void shouldDeleteDefinition() {
         final deleteURL = "/delete/id/${InsertTestDefinitionData.DEF.id}"
         assert mongo.exists(InsertTestDefinitionData.DEF.id) == true: "Definition should exist here"
-        println deleteURL
         mvc.perform(delete(deleteURL))
                 .andExpect(status().isOk())
         assert mongo.exists(InsertTestDefinitionData.DEF.id) == false: "Definition should have been deleted"

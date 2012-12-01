@@ -54,7 +54,15 @@ class MongoDefinitionRepositoryTest {
                 description: "test-desc",
                 definitionCategoryId: 1L)
         final actual = unit.save(expected)
-        assert actual.id : "Was expecting an id but got null"
+        assert actual.id  : "Was expecting id to generate"
+
+        final expected2 = new Definition(name: "different",
+                definition: "test-def",
+                description: "test-desc",
+                definitionCategoryId: 1L)
+
+        final actual2 = unit.save(expected2)
+        assert actual.id != actual2.id
     }
 
     @Test

@@ -14,10 +14,9 @@
     <int-http:inbound-gateway id="createDefinitionInboundAdapter"
                               request-channel="createDefinitionInputChannel"
                               reply-channel="createdDefinitionInputChannel" error-channel="errorChannel"
-                              path="/create/id/{id}/name/{name}/definition/{definition}/description/{description}/cat/{cat}"
+                              path="/create/name/{name}/definition/{definition}/description/{description}/cat/{cat}"
                               supported-methods="GET"
                               payload-expression="new net.cghsystems.definitions.domain.Definition(
-		          #pathVariables.id, 
 		          #pathVariables.name, 
 		          #pathVariables.definition, 
 		          #pathVariables.description, 
@@ -53,14 +52,12 @@
 
 
     <!-- Delete Definitions -->
-    <int:channel id="deleteDefinitionInputChannel"
-                 datatype="net.cghsystems.definitions.domain.Definition"/>
+    <int:channel id="deleteDefinitionInputChannel" datatype="net.cghsystems.definitions.domain.Definition"/>
 
     <int-http:inbound-channel-adapter id="deleteDefinitionInboundAdapter"
                                       channel="deleteDefinitionInputChannel" error-channel="errorChannel"
                                       path="/delete/id/{id}" supported-methods="DELETE"
-                                      payload-expression="new net.cghsystems.definitions.domain.Definition(
-                                                            #pathVariables.id)"/>
+                                      payload-expression=" T(net.cghsystems.definitions.domain.Definition).buildWithId(#pathVariables.id)"/>
 
     <int:service-activator input-channel="deleteDefinitionInputChannel"
                            expression="@mongoDefinitionRepository.delete(payload)"/>

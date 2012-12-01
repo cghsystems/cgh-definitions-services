@@ -1,9 +1,11 @@
 apply plugin: 'war'
 apply plugin: 'jetty'
 
-task startJettyAsDaemon << {
+jettyRun.doFirst {
     System.setProperty("spring.profiles.active", "dev")
+}
 
+task startJettyAsDaemon << {
     project.stopKey = 'C'
     project.stopPort = 8079
 
