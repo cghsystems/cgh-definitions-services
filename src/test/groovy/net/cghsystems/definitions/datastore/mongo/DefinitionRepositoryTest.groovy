@@ -27,20 +27,20 @@ class DefinitionRepositoryTest {
     void findOne() {
         final expected = InsertTestDefinitionData.DEF
         final actual = unit.findOne(expected.id)
-        assert actual == expected: "Expecting matching definitions"
+        assert actual == expected: "Expecting matching categories"
     }
 
     @Test
     void findByName() {
         final expected = InsertTestDefinitionData.DEF
         final actual = unit.findByName(expected.name)
-        assert actual == expected: "Expecting matching definitions"
+        assert actual == expected: "Expecting matching categories"
     }
 
     @Test
     void cannotFindByName() {
         final actual = unit.findByName("Something Random")
-        assert actual == null: "Expecting matching definitions"
+        assert actual == null: "Expecting matching categories"
     }
 
     /**
@@ -57,7 +57,7 @@ class DefinitionRepositoryTest {
                 definitionCategoryId: 1L)
         unit.save(expected)
         final actual = unit.findOne(expected.id)
-        assert actual == expected: "Expecting matching definitions"
+        assert actual == expected: "Expecting matching categories"
     }
 
     @Test
@@ -92,6 +92,6 @@ class DefinitionRepositoryTest {
     void findByDefinitionCategoryId() {
         final expected = InsertTestDefinitionData.DEF
         final actual = unit.findByDefinitionCategoryId(expected.definitionCategoryId)
-        assert actual.containsAll(expected, InsertTestDefinitionData.DEF_2): "Expecting matching definitions"
+        assert actual.containsAll(expected, InsertTestDefinitionData.DEF_2): "Expecting matching categories"
     }
 }

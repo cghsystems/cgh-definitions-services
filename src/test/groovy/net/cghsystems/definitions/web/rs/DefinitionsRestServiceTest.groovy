@@ -1,8 +1,10 @@
 package net.cghsystems.definitions.web.rs
 
-import net.cghsystems.definitions.datastore.mongo.InsertTestDefinitionData
 import net.cghsystems.definitions.datastore.mongo.DefinitionRepository
+import net.cghsystems.definitions.datastore.mongo.InsertTestDefinitionCategoryData
+import net.cghsystems.definitions.datastore.mongo.InsertTestDefinitionData
 import net.cghsystems.definitions.domain.Definition
+import net.cghsystems.definitions.domain.DefinitionCategory
 import net.cghsystems.definitions.web.ioc.DefinitionsControllerApplicationContext
 import org.codehaus.jackson.map.ObjectMapper
 import org.junit.BeforeClass
@@ -21,10 +23,11 @@ import org.springframework.test.web.server.setup.MockMvcBuilders
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status
+import org.codehaus.jackson.map.type.TypeFactory
 
 @ContextConfiguration("classpath:META-INF/spring/definitions-mongo-context.xml")
 @RunWith(SpringJUnit4ClassRunner)
-@TestExecutionListeners(InsertTestDefinitionData)
+@TestExecutionListeners([InsertTestDefinitionData, InsertTestDefinitionCategoryData])
 @ActiveProfiles("dev")
 class DefinitionsRestServiceTest {
 
@@ -43,7 +46,7 @@ class DefinitionsRestServiceTest {
 
     @Test
     void shouldPing() {
-        final url = "/ping/message/hello"
+        final url = "/ping/message/mesage-from-unit-test"
         mvc.perform(get(url)).andExpect(status().isOk())
     }
 
@@ -67,7 +70,7 @@ class DefinitionsRestServiceTest {
 
         final matcher = {
             final actual = new ObjectMapper().readValue(it.getResponse().getContentAsString(), Definition)
-            assert actual == expected: "Expected matching definitions"
+            assert actual == expected: "Expected matching categories"
         }
 
         final findURL = "/find/id/${expected.id}"
@@ -115,5 +118,20 @@ class DefinitionsRestServiceTest {
         mvc.perform(delete(deleteURL))
                 .andExpect(status().isOk())
         assert mongo.exists(id) == false: " deletion should have been handled silently"
+    }
+
+    //May need a new test class for below
+    @Test
+    void shouldFindAllCategories() {
+
+        final resultMatcher = {
+            final type = TypeFactory.defaultInstance().constructParametricType(Collection.class, DefinitionCategory)
+            final actual = new ObjectMapper().readValue(it.getResponse().getContentAsString(), type)
+            assert actual == [InsertTestDefinitionCategoryData.CAT, InsertTestDefinitionCategoryData.CAT_2]
+        }
+
+        final findCategoriesURL = "/category/findall"
+        mvc.perform(get(findCategoriesURL)).andExpect(status().isOk())
+                .andExpect([match: resultMatcher] as ResultMatcher)
     }
 }

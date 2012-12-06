@@ -12,7 +12,9 @@ import org.springframework.context.annotation.ImportResource
  *
  */
 @Configuration
-@ImportResource(["classpath:META-INF/spring/definitions-si-context.xml",
-	"classpath:META-INF/spring/definitions-mongo-context.xml"])
+@ImportResource([
+    "classpath:META-INF/spring/definitions-si-context.xml",
+	"classpath:META-INF/spring/definitions-mongo-context.xml",
+    "classpath:META-INF/spring/definitions-categories-si-context.xml"])
 class  DefinitionsControllerApplicationContext {
 }
