@@ -13,14 +13,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 @RunWith(SpringJUnit4ClassRunner)
 @TestExecutionListeners(InsertTestDefinitionData)
 @ActiveProfiles("dev")
-class MongoDefinitionRepositoryTest {
+class DefinitionRepositoryTest {
 
     @Autowired
-    MongoDefinitionRepository unit
+    DefinitionRepository unit
 
     /**
      * Given a definition exists in the db 
-     * When {@link MongoDefinitionRepository#findOne(String)} call with it's id
+     * When {@link DefinitionRepository#findOne(String)} call with it's id
      * Then should return expected {@link Definition}
      */
     @Test
@@ -30,9 +30,22 @@ class MongoDefinitionRepositoryTest {
         assert actual == expected: "Expecting matching definitions"
     }
 
+    @Test
+    void findByName() {
+        final expected = InsertTestDefinitionData.DEF
+        final actual = unit.findByName(expected.name)
+        assert actual == expected: "Expecting matching definitions"
+    }
+
+    @Test
+    void cannotFindByName() {
+        final actual = unit.findByName("Something Random")
+        assert actual == null: "Expecting matching definitions"
+    }
+
     /**
      * Given a {@link Definition}
-     * When {@link MongoDefinitionRepository#save(net.cghsystems.definitions.model.Definition)}
+     * When {@link DefinitionRepository#save(net.cghsystems.definitions.model.Definition)}
      * Then repo should contain expected {@link Definition}
      */
     @Test

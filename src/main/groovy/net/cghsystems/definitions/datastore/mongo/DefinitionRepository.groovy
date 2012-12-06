@@ -15,7 +15,15 @@ import org.springframework.stereotype.Repository
  *
  */
 @Repository
-interface MongoDefinitionRepository extends MongoRepository<Definition, String>  {
+interface DefinitionRepository extends MongoRepository<Definition, String>  {
 
     List<Definition> findByDefinitionCategoryId(Long id)
+
+    /**
+     * Searches for a Definition by name
+     * @param name to search for
+     * @return A Definition matched by name or null if none can be located.
+     */
+    Definition findByName(String name)
+
 }

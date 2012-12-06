@@ -1,7 +1,7 @@
 package net.cghsystems.definitions.web.rs
 
 import net.cghsystems.definitions.datastore.mongo.InsertTestDefinitionData
-import net.cghsystems.definitions.datastore.mongo.MongoDefinitionRepository
+import net.cghsystems.definitions.datastore.mongo.DefinitionRepository
 import net.cghsystems.definitions.domain.Definition
 import net.cghsystems.definitions.web.ioc.DefinitionsControllerApplicationContext
 import org.codehaus.jackson.map.ObjectMapper
@@ -29,7 +29,7 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.s
 class DefinitionsRestServiceTest {
 
     @Autowired
-    MongoDefinitionRepository mongo
+    DefinitionRepository mongo
 
     static MockMvc mvc
 

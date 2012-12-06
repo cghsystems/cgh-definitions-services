@@ -24,7 +24,7 @@
 
 
     <int:service-activator output-channel="createdDefinitionInputChannel" input-channel="createDefinitionInputChannel"
-                           expression="@mongoDefinitionRepository.save(payload)"/>
+                           expression="@definitionRepository.save(payload)"/>
     <!-- End create definitions -->
 
     <!-- Ping -->
@@ -47,7 +47,7 @@
 
     <int:service-activator id="findDefinitionServiceActivator"
                            input-channel="findDefinitionInputChannel" output-channel="foundDefinitionOutputChannel"
-                           expression="@mongoDefinitionRepository.findOne(payload)"/>
+                           expression="@definitionRepository.findOne(payload)"/>
     <!-- End find Definitions -->
 
 
@@ -60,7 +60,7 @@
                                       payload-expression=" T(net.cghsystems.definitions.domain.Definition).buildWithId(#pathVariables.id)"/>
 
     <int:service-activator input-channel="deleteDefinitionInputChannel"
-                           expression="@mongoDefinitionRepository.delete(payload)"/>
+                           expression="@definitionRepository.delete(payload)"/>
     <!-- End Delete Definitions -->
 
 
